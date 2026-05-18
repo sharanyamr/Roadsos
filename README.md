@@ -142,17 +142,3 @@ RoadSoS supports:
 
 ---
 
-# 📂 Project Structure
-
-```bash
-src/
- ├── app/
- ├── components/
- ├── dashboard/
- ├── services/
- ├── hooks/
- ├── firebase/
- ├── maps/
- ├── chatbot/
- ├── analytics/
- └── utils/
