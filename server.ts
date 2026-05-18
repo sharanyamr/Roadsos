@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,20 +11,18 @@ async function startServer() {
 
   app.use(express.json());
 
-  // Gemini setup
-  const ai = new GoogleGenAI({
-    apiKey: process.env.VITE_GEMINI_API_KEY || "",
-    httpOptions: {
-      headers: {
-        "User-Agent": "roadsos-ai",
-      },
-    },
+  // Health check
+  app.get("/api/health", (req, res) => {
+    res.json({
+      status: "ok",
+      message: "RoadSoS server is running",
+    });
   });
 
-  // Gemini API Route
+  // Emergency AI Route
   app.post("/api/gemini", async (req, res) => {
     try {
-      const { prompt, history } = req.body;
+      const { prompt } = req.body;
 
       if (!prompt) {
         return res.status(400).json({
@@ -33,58 +30,104 @@ async function startServer() {
         });
       }
 
-      if (!process.env.VITE_GEMINI_API_KEY) {
-        return res.status(500).json({
-          error: "Gemini API key missing",
-        });
+      const lower = prompt.toLowerCase();
+
+      let aiResponse = "";
+
+      // Bleeding
+      if (lower.includes("bleeding")) {
+        aiResponse = `
+## Severe Bleeding Control
+
+1. Apply direct pressure using a clean cloth.
+2. Elevate the injured area if possible.
+3. Do NOT remove embedded objects.
+4. Keep the victim calm.
+5. Call emergency services immediately (108).
+
+Stay with the victim until responders arrive.
+        `;
       }
 
-      const chat = ai.chats.create({
-        model: "gemini-2.0-flash",
-        history: history || [],
-        config: {
-          systemInstruction: `
-You are RoadSoS AI, an intelligent emergency response assistant.
+      // Fracture
+      else if (
+        lower.includes("fracture") ||
+        lower.includes("broken bone")
+      ) {
+        aiResponse = `
+## Fracture Support
 
-Responsibilities:
-- Provide emergency guidance
-- Give first aid support
-- Stay calm and concise
-- Support English, Hindi, Kannada
-- Prioritize user safety
+1. Do not move the injured limb.
+2. Immobilize the affected area.
+3. Apply ice wrapped in cloth.
+4. Monitor swelling and bleeding.
+5. Seek emergency medical help immediately.
+        `;
+      }
 
-Always recommend contacting emergency services during severe emergencies.
-          `,
-        },
-      });
+      // Unconscious
+      else if (lower.includes("unconscious")) {
+        aiResponse = `
+## Unconscious Victim Procedure
 
-      const response = await chat.sendMessage({
-        message: prompt,
-      });
+1. Check breathing immediately.
+2. If breathing, place victim in recovery position.
+3. If not breathing, begin CPR.
+4. Call emergency services (108).
+5. Monitor continuously until help arrives.
+        `;
+      }
+
+      // Accident
+      else if (lower.includes("accident")) {
+        aiResponse = `
+## Road Accident Emergency Steps
+
+1. Move to a safe location.
+2. Turn on vehicle hazard lights.
+3. Check for injuries.
+4. Call emergency services (108).
+5. Share your live location.
+6. Avoid moving severely injured victims.
+        `;
+      }
+
+      // Default
+      else {
+        aiResponse = `
+## RoadSoS Emergency Guidance
+
+1. Stay calm and assess the situation.
+2. Contact emergency services (108).
+3. Share your live location.
+4. Apply first aid if trained.
+5. Wait safely for responders.
+
+RoadSoS emergency assistance is active.
+        `;
+      }
 
       return res.json({
-        text:
-          response.text ||
-          "Emergency assistance is currently unavailable.",
+        text: aiResponse,
       });
+
     } catch (error) {
-      console.error("Gemini Error:", error);
+      console.error("Server Error:", error);
 
       return res.status(500).json({
-        text:
-          "Emergency assistance is temporarily unavailable. Please contact emergency services.",
+        text: `
+Emergency assistance is active.
+
+1. Call emergency services (108)
+2. Move to a safe location
+3. Share your live location
+4. Apply first aid if trained
+        `,
       });
     }
   });
 
-  // Health route
-  app.get("/api/health", (req, res) => {
-    res.json({
-      status: "ok",
-    });
-  });
-
-  // Development
+  // Development mode
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: {
@@ -94,8 +137,9 @@ Always recommend contacting emergency services during severe emergencies.
     });
 
     app.use(vite.middlewares);
+
   } else {
-    // Production
+    // Production mode
     const distPath = path.join(process.cwd(), "dist");
 
     app.use(express.static(distPath));
