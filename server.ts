@@ -12,88 +12,79 @@ async function startServer() {
 
   app.use(express.json());
 
-  // Gemini API setup
+  // Gemini setup
   const ai = new GoogleGenAI({
     apiKey: process.env.VITE_GEMINI_API_KEY || "",
     httpOptions: {
       headers: {
-        "User-Agent": "aistudio-build",
+        "User-Agent": "roadsos-ai",
       },
     },
   });
 
-  // Gemini Chat API
+  // Gemini API Route
   app.post("/api/gemini", async (req, res) => {
     try {
       const { prompt, history } = req.body;
 
-      // Validate API key
-      if (!process.env.VITE_GEMINI_API_KEY) {
-        return res.status(500).json({
-          error: "Gemini API key is not configured",
-        });
-      }
-
-      // Validate prompt
       if (!prompt) {
         return res.status(400).json({
           error: "Prompt is required",
         });
       }
 
-      // Gemini model
-      const model = "gemini-2.0-flash";
+      if (!process.env.VITE_GEMINI_API_KEY) {
+        return res.status(500).json({
+          error: "Gemini API key missing",
+        });
+      }
 
-      // Create chat
       const chat = ai.chats.create({
-        model,
+        model: "gemini-2.0-flash",
+        history: history || [],
         config: {
           systemInstruction: `
-You are RoadSoS AI, an advanced emergency response assistant.
+You are RoadSoS AI, an intelligent emergency response assistant.
 
 Responsibilities:
-1. Provide first aid guidance.
-2. Help during road accidents.
-3. Give calm emergency instructions.
-4. Support English, Hindi, and Kannada.
-5. Keep answers concise and actionable.
-6. Always prioritize safety.
+- Provide emergency guidance
+- Give first aid support
+- Stay calm and concise
+- Support English, Hindi, Kannada
+- Prioritize user safety
 
-If emergency is severe:
-- advise calling emergency services
-- suggest moving to a safe location
-- recommend nearby hospitals
+Always recommend contacting emergency services during severe emergencies.
           `,
         },
-        history: history || [],
       });
 
-      // Generate response
       const response = await chat.sendMessage({
         message: prompt,
       });
 
-      res.json({
+      return res.json({
         text:
           response.text ||
-          "Emergency assistance is currently limited. Please contact emergency services immediately.",
+          "Emergency assistance is currently unavailable.",
       });
     } catch (error) {
       console.error("Gemini Error:", error);
 
-      res.status(500).json({
+      return res.status(500).json({
         text:
-          "Emergency assistance is temporarily unavailable. Please call emergency services immediately.",
+          "Emergency assistance is temporarily unavailable. Please contact emergency services.",
       });
     }
   });
 
   // Health route
   app.get("/api/health", (req, res) => {
-    res.json({ status: "ok" });
+    res.json({
+      status: "ok",
+    });
   });
 
-  // Development mode
+  // Development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: {
@@ -104,7 +95,7 @@ If emergency is severe:
 
     app.use(vite.middlewares);
   } else {
-    // Production mode
+    // Production
     const distPath = path.join(process.cwd(), "dist");
 
     app.use(express.static(distPath));
@@ -120,7 +111,7 @@ If emergency is severe:
   });
 }
 
-// Start app
+// Start application
 startServer().catch((err) => {
   console.error("Server startup error:", err);
 });
