@@ -1,0 +1,6 @@
+{
+  "name": "RoadSoS",
+  "description": "Futuristic AI-powered emergency road accident response platform with live tracking and SOS support.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

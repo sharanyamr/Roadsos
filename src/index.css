@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+  }
+}
+
+.glass {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
+}
+
+.glass-dark {
+  @apply bg-black/40 backdrop-blur-lg border border-white/10 shadow-2xl;
+}
+
+.btn-primary {
+  @apply px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-medium transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-red-600/30;
+}
+
+.emergency-btn {
+  @apply w-32 h-32 rounded-full bg-red-600 flex items-center justify-center text-white font-bold text-2xl shadow-2xl shadow-red-600/50 hover:bg-red-500 transition-all active:scale-90 border-4 border-red-400;
+}
