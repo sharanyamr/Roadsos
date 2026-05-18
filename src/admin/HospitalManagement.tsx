@@ -5,44 +5,44 @@ import { cn } from '@/src/lib/utils';
 
 const hospitals = [
   { 
-    name: "Central Trauma Institute", 
+    name: "Manipal Hospital Bengaluru", 
     status: "Active", 
-    icu: 12, 
-    capacity: "82%", 
+    icu: 18, 
+    capacity: "76%", 
     readiness: "High",
-    type: "Level 1 Trauma Center",
-    staff: 142,
-    rating: 4.9
+    type: "Multi-Speciality Trauma Center",
+    staff: 165,
+    rating: 4.8
   },
   { 
-    name: "City Memorial Hospital", 
+    name: "Apollo Hospitals Bannerghatta", 
     status: "Busy", 
-    icu: 4, 
-    capacity: "94%", 
-    readiness: "Medium",
-    type: "General Emergency",
-    staff: 86,
+    icu: 9, 
+    capacity: "89%", 
+    readiness: "High",
+    type: "Emergency & Critical Care",
+    staff: 132,
     rating: 4.7
   },
   { 
-    name: "St. Jude Rescue Center", 
+    name: "Narayana Health City", 
     status: "Active", 
-    icu: 8, 
-    capacity: "45%", 
+    icu: 14, 
+    capacity: "58%", 
     readiness: "Elite",
-    type: "Critical Care Unit",
-    staff: 54,
-    rating: 5.0
+    type: "Advanced Trauma Care",
+    staff: 210,
+    rating: 4.9
   },
   { 
-    name: "Westside General", 
+    name: "Fortis Hospital Bengaluru", 
     status: "Critical", 
-    icu: 0, 
-    capacity: "100%", 
-    readiness: "Limited",
-    type: "Community Health",
-    staff: 32,
-    rating: 4.2
+    icu: 3, 
+    capacity: "97%", 
+    readiness: "Medium",
+    type: "Emergency Response Unit",
+    staff: 98,
+    rating: 4.6
   },
 ];
 
