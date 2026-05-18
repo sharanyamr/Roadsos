@@ -1,10 +1,9 @@
 {
-  "projectId": "shining-lambda-d07pf",
-  "appId": "1:231330978071:web:1f582b64712e794a977f52",
-  "apiKey": "AIzaSyAIfrCXzSr-JxuhSQH-ljMHHUjxa1ReZeA",
-  "authDomain": "shining-lambda-d07pf.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-832d85d0-d370-48d8-b5a1-2f93046b6369",
-  "storageBucket": "shining-lambda-d07pf.firebasestorage.app",
-  "messagingSenderId": "231330978071",
-  "measurementId": ""
+  "projectId": "roadsos-e687f",
+  "appId": "1:396167488862:web:9c68736bed55640b339bcf",
+  "apiKey": "AIzaSyBN7gr4bbcgQlpq9gyjiwSI-CdvUqE_d6c",
+  "authDomain": "roadsos-e687f.firebaseapp.com",
+  "storageBucket": "roadsos-e687f.firebasestorage.app",
+  "messagingSenderId": "396167488862",
+  "measurementId": "G-2X261H13LM"
 }
