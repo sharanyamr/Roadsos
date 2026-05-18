@@ -14,7 +14,7 @@ export default function AIChat() {
     {
       role: 'model',
       parts: [{
-        text: "Hello! I'm your RoadSoS Emergency AI. I can guide you through first aid, road accidents, fractures, bleeding control, and emergency response procedures. How can I help you right now?"
+        text: "Hello! I'm your RoadSoS Emergency AI. I can guide you through first aid, road accidents, fractures, bleeding control, burns, and emergency response procedures. How can I help you right now?"
       }]
     }
   ]);
@@ -44,13 +44,53 @@ export default function AIChat() {
     setLoading(true);
 
     try {
+      const lower = text.toLowerCase();
+
+      let emergencyType = "general";
+
+      // Detect emergency type
+      if (
+        lower.includes("blood") ||
+        lower.includes("bleeding") ||
+        lower.includes("cut")
+      ) {
+        emergencyType = "bleeding";
+      }
+      else if (
+        lower.includes("fracture") ||
+        lower.includes("broken") ||
+        lower.includes("bone")
+      ) {
+        emergencyType = "fracture";
+      }
+      else if (
+        lower.includes("unconscious") ||
+        lower.includes("not breathing") ||
+        lower.includes("fainted")
+      ) {
+        emergencyType = "unconscious";
+      }
+      else if (
+        lower.includes("burn") ||
+        lower.includes("fire")
+      ) {
+        emergencyType = "burn";
+      }
+      else if (
+        lower.includes("accident") ||
+        lower.includes("crash") ||
+        lower.includes("collision")
+      ) {
+        emergencyType = "accident";
+      }
+
       const response = await fetch('/api/gemini', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          prompt: text,
+          prompt: emergencyType,
         }),
       });
 
@@ -110,12 +150,12 @@ export default function AIChat() {
       prompt: 'What to do if someone has a broken bone?'
     },
     {
-      label: 'Unconscious Victim',
-      prompt: 'What to do if a victim is unconscious but breathing?'
+      label: 'Burn Injury',
+      prompt: 'What to do for severe burns?'
     },
     {
-      label: 'Call 108 Tips',
-      prompt: 'What information should I give when calling emergency services?'
+      label: 'Unconscious Victim',
+      prompt: 'What to do if a victim is unconscious but breathing?'
     },
   ];
 
