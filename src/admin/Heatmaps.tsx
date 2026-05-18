@@ -7,11 +7,11 @@ import 'leaflet/dist/leaflet.css';
 
 // Mock hotspot data
 const hotspots = [
-  { lat: 37.7749, lng: -122.4194, intensity: 0.8, label: 'Downtown Crossing' },
-  { lat: 37.7849, lng: -122.4094, intensity: 0.6, label: 'Market St. Junction' },
-  { lat: 37.7649, lng: -122.4294, intensity: 0.9, label: 'Highway 101 Onramp' },
-  { lat: 37.7549, lng: -122.4194, intensity: 0.4, label: 'Mission District' },
-  { lat: 37.7949, lng: -122.3994, intensity: 0.7, label: 'Bay Bridge Access' },
+  { lat: 12.9716, lng: 77.5946, intensity: 0.8, label: 'MG Road Junction' },
+  { lat: 12.9352, lng: 77.6245, intensity: 0.6, label: 'Koramangala Signal' },
+  { lat: 12.9279, lng: 77.6271, intensity: 0.9, label: 'Silk Board Junction' },
+  { lat: 12.9763, lng: 77.6033, intensity: 0.4, label: 'Majestic Circle' },
+  { lat: 12.9698, lng: 77.7500, intensity: 0.7, label: 'Whitefield Main Road' },
 ];
 
 export default function HeatmapView() {
