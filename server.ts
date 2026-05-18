@@ -22,7 +22,7 @@ async function startServer() {
     },
   });
 
-  // API Routes
+  // Gemini Chat API
   app.post("/api/gemini", async (req, res) => {
     try {
       const { prompt, history } = req.body;
@@ -30,7 +30,7 @@ async function startServer() {
       // Validate API key
       if (!process.env.VITE_GEMINI_API_KEY) {
         return res.status(500).json({
-          error: "VITE_GEMINI_API_KEY is not configured",
+          error: "Gemini API key is not configured",
         });
       }
 
@@ -42,24 +42,27 @@ async function startServer() {
       }
 
       // Gemini model
-      const model = "gemini-1.5-flash";
+      const model = "gemini-2.0-flash";
 
       // Create chat
       const chat = ai.chats.create({
         model,
         config: {
           systemInstruction: `
-You are RoadSoS AI, an elite emergency response assistant.
+You are RoadSoS AI, an advanced emergency response assistant.
 
 Responsibilities:
-1. Provide emergency guidance.
-2. Give first aid instructions.
-3. Stay calm and professional.
+1. Provide first aid guidance.
+2. Help during road accidents.
+3. Give calm emergency instructions.
 4. Support English, Hindi, and Kannada.
-5. Keep responses concise and structured.
-6. Prioritize user safety.
+5. Keep answers concise and actionable.
+6. Always prioritize safety.
 
-Always encourage contacting emergency services immediately.
+If emergency is severe:
+- advise calling emergency services
+- suggest moving to a safe location
+- recommend nearby hospitals
           `,
         },
         history: history || [],
@@ -71,18 +74,21 @@ Always encourage contacting emergency services immediately.
       });
 
       res.json({
-        text: response.text || "No response generated.",
+        text:
+          response.text ||
+          "Emergency assistance is currently limited. Please contact emergency services immediately.",
       });
     } catch (error) {
       console.error("Gemini Error:", error);
 
       res.status(500).json({
-        error: "Failed to generate AI response",
+        text:
+          "Emergency assistance is temporarily unavailable. Please call emergency services immediately.",
       });
     }
   });
 
-  // Health Check
+  // Health route
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
   });
@@ -114,8 +120,7 @@ Always encourage contacting emergency services immediately.
   });
 }
 
+// Start app
 startServer().catch((err) => {
   console.error("Server startup error:", err);
 });
-
-startServer();
